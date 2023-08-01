@@ -53,11 +53,11 @@ public class Main {
         while (!pq.isEmpty()) {
             Node node = pq.poll();
             int now = node.vertex;
-            int dist = node.dist;
+           // int dist = node.dist;
 
-            if (dist > distance[now]) {
-                continue;
-            }
+//            if (dist > distance[now]) {
+//                continue;
+//            }
 
             for (Node nextNode : map.get(now)) {
                 int newDistance = distance[now] + nextNode.dist;
