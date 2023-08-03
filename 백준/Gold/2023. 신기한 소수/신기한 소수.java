@@ -1,4 +1,6 @@
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Scanner;
 
 public class Main {
@@ -17,17 +19,20 @@ public class Main {
 	}
 
 	static int n;
+	static BufferedWriter bw;
 
 	public static void main(String[] args) throws IOException {
 		// 입력
 		Scanner sc = new Scanner(System.in);
 		n = sc.nextInt();
-
+		bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		funnyPrime(0, 0);
+		bw.flush();
+		bw.close();
 
 	}
 
-	private static void funnyPrime(int beforeNum, int beforeLength) {
+	private static void funnyPrime(int beforeNum, int beforeLength) throws IOException {
 		for (int i = 0; i < 10; i++) {
 			int temp = beforeNum * 10 + i;
 			if (isPrime(temp)) {
@@ -35,7 +40,7 @@ public class Main {
 				if (beforeLength < n - 1)
 					funnyPrime(temp, beforeLength + 1);
 				else
-					System.out.println(temp);
+					bw.write(temp + "\n");
 			}
 		}
 	}
