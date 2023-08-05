@@ -18,7 +18,6 @@ public class Main {
 			int a = 0;// dp i-3 + aryi-2 + aryi
 			int b = 0;// dp i-3 + aryi-1 + aryi
 			int c = 0;// dp i-2 + aryi
-			int cnt = 0;
 			if (!(dp[i - 3][1] == 2)) {
 				a = dp[i - 3][0] + ary[i - 2] + ary[i];
 			}
