@@ -24,7 +24,7 @@ public class Main {
 			return a % c;
 		long temp = recursive(a, b / 2, c);
 		if (b % 2 == 0) {
-			return temp * temp % c;
+			return temp%c * temp % c;
 		} else {
 			return (temp % c * temp % c) * a % c;
 		}
