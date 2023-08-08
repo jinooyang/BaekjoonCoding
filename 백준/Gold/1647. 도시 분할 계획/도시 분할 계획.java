@@ -1,0 +1,64 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+	// 도시 분할 계획
+	// 두개의 마을로 나눠야한다
+	// 크기가 가장 큰 간선을 뺀다
+
+	static int parent[];
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int n = Integer.parseInt(st.nextToken());
+		int m = Integer.parseInt(st.nextToken());
+		int graph[][] = new int[m][3];
+		parent = new int[n + 1];
+		for (int i = 0; i < n + 1; i++) {
+			parent[i] = i;
+		}
+		for (int i = 0; i < m; i++) {
+			st = new StringTokenizer(br.readLine());
+			int u = Integer.parseInt(st.nextToken());
+			int v = Integer.parseInt(st.nextToken());
+			int w = Integer.parseInt(st.nextToken());
+			graph[i][0] = u;
+			graph[i][1] = v;
+			graph[i][2] = w;
+		}
+		Arrays.sort(graph, (o1, o2) -> Integer.compare(o1[2], o2[2]));
+		int answer = 0;
+		int maxEdge = 0;
+		for (int i = 0; i < m; i++) {
+			if (find(graph[i][0]) != find(graph[i][1])) {
+				answer += graph[i][2];
+				if (graph[i][2] > maxEdge)
+					maxEdge = graph[i][2];
+				union(graph[i][0], graph[i][1]);
+			}
+		}
+		
+		System.out.println(answer - maxEdge);
+	}
+
+	private static void union(int i, int j) {
+		int a = find(i);
+		int b = find(j);
+		if (a > b)
+			parent[a] = b;
+		else
+			parent[b] = a;
+
+	}
+
+	private static int find(int i) {
+		if (parent[i] == i)
+			return i;
+		else
+			return find(parent[i]);
+	}
+}
