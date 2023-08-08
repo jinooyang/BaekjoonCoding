@@ -27,9 +27,8 @@ public class Main {
 		}
 
 		// 계산
-		int cnt = 0;
 		int insideLayer = Math.min(n, m);
-		insideLayer = insideLayer / 2 - 1;
+		insideLayer = insideLayer / 2 - 1;// 가장 안쪽 레이어
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				int answeri = i;
@@ -43,34 +42,36 @@ public class Main {
 				for (int rotate = 0; rotate < r; rotate++) {
 					int di = answeri + deli[direction];
 					int dj = answerj + delj[direction];
-
-					if (di >= layer && di < n - layer && dj >= layer && dj < m - layer) {// 바깥범위
+					// layer안쪽인지
+					if (di >= layer && di < n - layer && dj >= layer && dj < m - layer) {
+						// 제일 안쪽 layer인 경우
 						if (layer == insideLayer) {
-							// 그냥 진행 시켜
 							answeri = di;
 							answerj = dj;
 							continue;
 						}
-						// 안쪽 범위의 바깥인 경우
+						// 안쪽 layer의 바깥인지
 						if (!(di >= layer + 1 && di < n - layer - 1 && dj >= layer + 1 && dj < m - layer - 1)) {
 							// 진행 시켜
 							answeri = di;
 							answerj = dj;
 							continue;
-						} else {
-							// 안쪽 범위라면 이쪽 방향은 안돼
+						}
+						// 방향 전환
+						else {
 							direction = (direction + 1) % 4;
 							rotate--;
 							continue;
 						}
-					} else {
+					}
+					// 방향 전환
+					else {
 						direction = (direction + 1) % 4;
 						rotate--;
 						continue;
 					}
 
 				}
-				//System.out.println(i + "," + j + "==>" + answeri + "," + answerj + ", layer is " + layer);
 				answer[answeri][answerj] = ary[i][j];
 			}
 		}
