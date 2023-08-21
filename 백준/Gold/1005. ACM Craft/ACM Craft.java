@@ -43,21 +43,13 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			int w = Integer.parseInt(st.nextToken());
 			Queue<Integer> q = new ArrayDeque<>();
-			Queue<Integer> qcnt = new ArrayDeque<>();
-
 			for (int i = 1; i <= n; i++) {
 				if (building[i] == 0) {
 					q.add(i);
-					qcnt.add(time[i]);
 				}
 			}
 			while (!q.isEmpty()) {
 				int now = q.poll();
-				// System.out.println(now);
-				int cnt = qcnt.poll();
-				// System.out.println(now + " " + cnt);
-				// if (cnt > answer[now])
-				// answer[now] = cnt;
 				for (int i = 0; i < list.get(now).size(); i++) {
 					int next = list.get(now).get(i);
 					int newTime = answer[now] + time[next];
@@ -66,12 +58,10 @@ public class Main {
 						answer[next] = newTime;
 					if (building[next] == 0) {
 						q.add(next);
-						qcnt.add(newTime);
 					}
 				}
 			}
 			System.out.println(answer[w]);
-			// System.out.println("----");
 		}
 	}
 }
