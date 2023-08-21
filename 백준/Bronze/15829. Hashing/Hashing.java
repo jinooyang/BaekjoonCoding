@@ -4,8 +4,8 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	private static int getPower(int a, int b) {
-		int mul = 1;
+	private static long getPower(int a, int b) {
+		long mul = 1;
 		for (int i = 0; i < b; i++) {
 			mul = mul * a % 1234567891;
 		}
@@ -18,7 +18,7 @@ public class Main {
 		int L = Integer.parseInt(st.nextToken());
 		st = new StringTokenizer(br.readLine());
 		String s = st.nextToken();
-		int sum = 0;
+		long sum = 0;
 		for (int i = 0; i < s.length(); i++) {
 			sum += (s.charAt(i) - 'a' + 1) * getPower(31, i) % 1234567891;
 		}
