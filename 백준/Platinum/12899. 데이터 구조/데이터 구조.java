@@ -109,9 +109,7 @@ public class Main {
 	// 핵심 코드
 	private static Node findNum(int s, int e, int idx, int x) {
 		// 현재 노드와 값을 비교하자
-		// 현재 노드보다 카운트가 크면 바대 서브트리에 값이 있다는 뜻이니 바로 리턴한다
-//		if (x > seg[idx].cnt)
-//			return seg[idx];
+
 		// 찾고자 하는 정답이니 리턴한다
 		// 카운트가 같다는 것은 x번째 작은 수라는 뜻이다.
 		if (seg[idx].cnt == x) {
