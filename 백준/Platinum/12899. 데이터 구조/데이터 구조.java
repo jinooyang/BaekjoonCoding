@@ -19,12 +19,6 @@ public class Main {
 			this.cnt = n.cnt;
 			this.num = n.num;
 		}
-
-		@Override
-		public String toString() {
-			return "Node [cnt=" + cnt + ", num=" + num + "]";
-		}
-
 	}
 
 	static final int end = 2_000_000;
@@ -69,7 +63,7 @@ public class Main {
 		segTree(1, end, 1);
 	}
 
-	// cnt의 구간 합을 기준으로 세그 트리를 만든다
+	// 0,숫자를 가진 노드로 빈 세그트리를 만든다
 	private static Node segTree(int s, int e, int idx) {
 		if (s == e)
 			return seg[idx] = new Node(ary[s]);
@@ -81,7 +75,10 @@ public class Main {
 
 	}
 
-	private static Node update(int s, int e, int idx, int change, int val) {// val=1값추가, val=-1값 삭제
+	// change : 숫자가 추가되면 해당 값을 포함한 노드의 카운트를 1증가
+	// 감소하면 1 빼기
+	// val=1값추가, val=-1값 삭제
+	private static Node update(int s, int e, int idx, int change, int val) {
 		// 현재노드가....
 		// 범위 밖이면 리턴
 		if (change < s || change > e)
@@ -108,37 +105,44 @@ public class Main {
 
 	}
 
-	private static Node findNum(int s, int e, int idx, int x) {// x번째 작은 수를 찾는다, 즉 cnt가 x인 노드의 num값을 찾는다
+	// x번째 작은 수를 찾는다, 즉 cnt가 x인 노드의 num값을 찾는다
+	// 핵심 코드
+	private static Node findNum(int s, int e, int idx, int x) {
 		// 현재 노드와 값을 비교하자
-		// System.out.println(seg[idx].cnt + " " + seg[idx].num + " x : " + x);
-		if (x > seg[idx].cnt)
-			return seg[idx];
-
+		// 현재 노드보다 카운트가 크면 바대 서브트리에 값이 있다는 뜻이니 바로 리턴한다
+//		if (x > seg[idx].cnt)
+//			return seg[idx];
+		// 찾고자 하는 정답이니 리턴한다
+		// 카운트가 같다는 것은 x번째 작은 수라는 뜻이다.
 		if (seg[idx].cnt == x) {
 			return seg[idx];
 		}
-		if (s == e)// 같은 수 가 여러개 있는 경우도 생각해야한다?
+		// 더이상 자식이 없으니 리턴한다
+		if (s == e)
 			return seg[idx];
 		int mid = (s + e) / 2;
+		// 왼쪽 오른쪽 서브트리의 노드의 값에 따라 로직이 달라진다
 		Node left = seg[idx * 2];
-		// System.out.println(left);
 		Node right = seg[idx * 2 + 1];
+		// 왼쪽 오른쪽 자식이 모두 카운트가 0이면 값이 없다는 뜻이이 리턴한다
 		if (left.cnt == 0 && right.cnt == 0)
 			return seg[idx];
+		// 왼쪽 자식이 없으면 오른쪽가서 찾는다
 		if (left.cnt == 0)
 			return findNum(mid + 1, e, idx * 2 + 1, x - left.cnt);
+		// 오른쪽 자식이 없으면 왼쪽 가서 찾는다
 		if (right.cnt == 0)
 			return findNum(s, mid, idx * 2, x);
+
+		// 양 쪽 자식이 모두 있다면
+		// x가 왼쪽 카운트보다 크면 왼쪽은 볼 필요가 없다. 오른쪽에 답이 있기 떄문이다.
+		// 대신 왼쪽 서브트리에 값 만큼 x-left.cnt를 해준다
+		// 왜냐하면 왼쪽에 5개 있고 6을 찾는다면 오른쪽에서 1번째로 작은 수를 찾으면 되니까.
 		if (x > left.cnt)
 			return findNum(mid + 1, e, idx * 2 + 1, x - left.cnt);
 		else
 			return findNum(s, mid, idx * 2, x);
 
-		// find x
-		// 왼쪽 서브트리의 num이 더 크다면 -> 왼쪽으로 이동
-		// 오른쪽 서브트리의 num이 더 크다면 - >오른쪽으로 이동하는데 x에서 왼쪽 서브트리의 cnt를 뺸다
-
-		// 현재 수cnt를 내린다
 	}
 
 }
