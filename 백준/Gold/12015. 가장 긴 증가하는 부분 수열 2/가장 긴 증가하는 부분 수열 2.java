@@ -9,25 +9,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
-	static class Node implements Comparable<Node> {
-		int x;
-		int idx;
-
-		public Node(int x, int idx) {
-			super();
-			this.x = x;
-			this.idx = idx;
-		}
-
-		@Override
-		public int compareTo(Node o) {
-			if (this.x != o.x) {
-				return Integer.compare(this.x, o.x);
-			} else
-				return Integer.compare(this.idx, o.idx);
-		}
-
-	}
 
 	static int seg[];
 	static int ary[];
@@ -60,7 +41,7 @@ public class Main {
 			map.put(ary[i], i);
 		}
 		// System.out.println(map);
-		Arrays.fill(ary, 0);
+		// Arrays.fill(ary, 0);
 		init(0, n - 1, 1);
 
 		int maxAnswer = 0;
@@ -73,12 +54,12 @@ public class Main {
 			dp += 1;
 			// System.out.println(dp);
 			// 같은 수 일리가 없다
-			if(dpAry[now] < dp) {
+			if (dpAry[now] < dp) {
 				dpAry[now] = dp;
 				update(0, n - 1, 1, map.get(now), dp);
 			}
-			//update(0, n - 1, 1, map.get(now), dp);// 큰 값으로 갱신 된 경우에만 업데이트해야한다
-			
+			// update(0, n - 1, 1, map.get(now), dp);// 큰 값으로 갱신 된 경우에만 업데이트해야한다
+
 			maxAnswer = Math.max(maxAnswer, dp);
 		}
 		System.out.println(maxAnswer);
@@ -108,7 +89,7 @@ public class Main {
 
 	private static int init(int s, int e, int idx) {
 		if (s == e)
-			return seg[idx] = ary[s];
+			return seg[idx] = 0;
 		int mid = (s + e) / 2;
 		return seg[idx] = Math.max(init(s, mid, idx * 2), init(mid + 1, e, idx * 2 + 1));
 
