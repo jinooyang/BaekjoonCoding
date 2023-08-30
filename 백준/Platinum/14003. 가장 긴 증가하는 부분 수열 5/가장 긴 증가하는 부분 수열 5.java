@@ -11,24 +11,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	static class Node {
-		int dpVal;
-		int originalVal;
-
-		public Node(int dpVal, int originalVal) {
-			super();
-			this.dpVal = dpVal;
-			this.originalVal = originalVal;
-		}
-
-		@Override
-		public String toString() {
-			return "Node [dpVal=" + dpVal + ", originalVal=" + originalVal + "]";
-		}
-
-	}
-
-	static Node seg[];
+	static int seg[];
 	static int ary[];
 	static Map<Integer, Integer> map;
 	static Map<Integer, Integer> map2;
@@ -48,7 +31,7 @@ public class Main {
 		int n = set.size();
 		// System.out.println(set);
 		ary = new int[n];
-		seg = new Node[4 * n];
+		seg = new int[4 * n];
 		int idx = 0;
 		for (Integer i : set) {
 			ary[idx++] = i;
@@ -69,50 +52,30 @@ public class Main {
 		init(0, n - 1, 1);
 
 		int maxAnswer = 0;
-		int maxNow = 0;
 		Map<Integer, Integer> dpMap = new HashMap<>();
 		for (int k = 0; k < N; k++) {
 			int now = originAry[k];
 			// now의 DP갱신
 			// 세그트리에서 현재 값보다 작은 범위에서 가장 큰 값을 구하자
-			Node dp = findMax(0, n - 1, 1, 0, map.get(now) - 1);
-			// System.out.println(now + " " + dp);
-			// dp.dpVal += 1;
-			int dpx = dp.dpVal + 1;
-			// System.out.println(dp);
+			int dp = findMax(0, n - 1, 1, 0, map.get(now) - 1) + 1;
+
 			// 같은 수 일리가 없다
 			if (dpMap.containsKey(now)) {
-				if (dpMap.get(now) < dpx) {
-					dpMap.put(now, dpx);
-					// dpMap.put(최대를 반환한 노드, value)
-
-					update(0, n - 1, 1, map.get(now), dpx);
+				if (dpMap.get(now) < dp) {
+					dpMap.put(now, dp);
+					update(0, n - 1, 1, map.get(now), dp);
 				}
 			} else {// 처음 보는 값인 경우
-				dpMap.put(now, dpx);
-
-				update(0, n - 1, 1, map.get(now), dpx);
+				dpMap.put(now, dp);
+				update(0, n - 1, 1, map.get(now), dp);
 			}
 
-			// System.out.println(dpList.get(now));
-//			if (dpAry[now] < dp) {
-//				dpAry[now] = dp;
-//				update(0, n - 1, 1, map.get(now), dp);
-//			}
-			// update(0, n - 1, 1, map.get(now), dp);// 큰 값으로 갱신 된 경우에만 업데이트해야한다
+			if (dp > maxAnswer)
+				maxAnswer = dp;
 
-			// maxAnswer = Math.max(maxAnswer, dp.dpVal);
-			if (dpx > maxAnswer) {
-				// System.out.println(now);
-				maxAnswer = dpx;
-				maxNow = now;
-			}
-			dpAry[k] = dpx;
+			dpAry[k] = dp;
 		}
 
-//		for (Integer i : dpList.keySet()) {
-//			System.out.println(i + "!! : " + dpList.get(i).toString());
-//		}
 		// 정답
 		System.out.println(maxAnswer);
 		int cnt = maxAnswer;
@@ -129,57 +92,51 @@ public class Main {
 			sb.append(answer.pop()).append(" ");
 		}
 		System.out.println(sb);
-//		for (int i = 0; i < dpList.get(maxNow).size(); i++) {
-//			System.out.print(dpList.get(maxNow).get(i) + " ");
-//		}
 
 	}
 
-	private static Node findMax(int s, int e, int idx, int l, int r) {
+	private static int findMax(int s, int e, int idx, int l, int r) {
 		if (r < s || e < l) {
-			return new Node(0, 0);
+			return 0;
 		}
 		if (l <= s && e <= r) {
 			return seg[idx];
 		}
 		int mid = (s + e) / 2;
-		Node left = findMax(s, mid, idx * 2, l, r);
-		Node right = findMax(mid + 1, e, idx * 2 + 1, l, r);
-		return left.dpVal > right.dpVal ? left : right;
+		int left = findMax(s, mid, idx * 2, l, r);
+		int right = findMax(mid + 1, e, idx * 2 + 1, l, r);
+		return left > right ? left : right;
 
-		// return Math.max(findMax(s, mid, idx * 2, l, r), findMax(mid + 1, e, idx * 2 +
-		// 1, l, r));
 	}
 
-	private static Node update(int s, int e, int idx, int chg, int val) {
+	private static int update(int s, int e, int idx, int chg, int val) {
 		if (chg < s || chg > e)
 			return seg[idx];
 		if (s == e) {
-			seg[idx].dpVal = val;
+			seg[idx] = val;
 			return seg[idx];
 		}
 		int mid = (s + e) / 2;
-		Node left = update(s, mid, idx * 2, chg, val);
-		Node right = update(mid + 1, e, idx * 2 + 1, chg, val);
-		if (left.dpVal > right.dpVal) {
-			seg[idx].dpVal = left.dpVal;
-			seg[idx].originalVal = left.originalVal;
+		int left = update(s, mid, idx * 2, chg, val);
+		int right = update(mid + 1, e, idx * 2 + 1, chg, val);
+		if (left > right) {
+			seg[idx] = left;
+
 			return seg[idx];
 		}
 
-		seg[idx].dpVal = right.dpVal;
-		seg[idx].originalVal = right.originalVal;
+		seg[idx] = right;
+
 		return seg[idx];
 	}
 
-	private static Node init(int s, int e, int idx) {
+	private static int init(int s, int e, int idx) {
 		if (s == e)
-			return seg[idx] = new Node(ary[s], map2.get(s));
+			return seg[idx] = ary[s];
 		int mid = (s + e) / 2;
-		Node left = init(s, mid, idx * 2);
-		Node right = init(mid + 1, e, idx * 2 + 1);
-		return seg[idx] = left.dpVal > right.dpVal ? new Node(left.dpVal, left.originalVal)
-				: new Node(right.dpVal, right.originalVal);
+		int left = init(s, mid, idx * 2);
+		int right = init(mid + 1, e, idx * 2 + 1);
+		return seg[idx] = left > right ? left : right;
 
 	}
 
