@@ -14,7 +14,6 @@ public class Main {
 	static int seg[];
 	static int ary[];
 	static Map<Integer, Integer> map;
-	static Map<Integer, Integer> map2;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,27 +28,17 @@ public class Main {
 			set.add(originAry[i]);
 		}
 		int n = set.size();
-		// System.out.println(set);
 		ary = new int[n];
 		seg = new int[4 * n];
 		int idx = 0;
-		for (Integer i : set) {
+		for (Integer i : set)
 			ary[idx++] = i;
-
-		}
 
 		Arrays.sort(ary);
 		// ----------------------------------------------
 		map = new HashMap<>(); // 각 수의 인덱스를 저장하자
-		map2 = new HashMap<>(); // 각 수의 인덱스를 저장하자
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++)
 			map.put(ary[i], i);
-			map2.put(i, ary[i]);
-		}
-		// System.out.println(map);
-		Arrays.fill(ary, 0);
-		// System.out.println(map);
-		init(0, n - 1, 1);
 
 		int maxAnswer = 0;
 		Map<Integer, Integer> dpMap = new HashMap<>();
@@ -84,7 +73,6 @@ public class Main {
 		for (int i = N - 1; i >= 0; i--) {
 			if (dpAry[i] == cnt) {
 				answer.add(originAry[i]);
-				// sb.append(originAry[i]).append(" ");
 				cnt--;
 			}
 		}
@@ -96,48 +84,26 @@ public class Main {
 	}
 
 	private static int findMax(int s, int e, int idx, int l, int r) {
-		if (r < s || e < l) {
+		if (r < s || e < l)
 			return 0;
-		}
-		if (l <= s && e <= r) {
+
+		if (l <= s && e <= r)
 			return seg[idx];
-		}
+
 		int mid = (s + e) / 2;
-		int left = findMax(s, mid, idx * 2, l, r);
-		int right = findMax(mid + 1, e, idx * 2 + 1, l, r);
-		return left > right ? left : right;
+		return Math.max(findMax(s, mid, idx * 2, l, r), findMax(mid + 1, e, idx * 2 + 1, l, r));
 
 	}
 
 	private static int update(int s, int e, int idx, int chg, int val) {
 		if (chg < s || chg > e)
 			return seg[idx];
-		if (s == e) {
-			seg[idx] = val;
-			return seg[idx];
-		}
-		int mid = (s + e) / 2;
-		int left = update(s, mid, idx * 2, chg, val);
-		int right = update(mid + 1, e, idx * 2 + 1, chg, val);
-		if (left > right) {
-			seg[idx] = left;
-
-			return seg[idx];
-		}
-
-		seg[idx] = right;
-
-		return seg[idx];
-	}
-
-	private static int init(int s, int e, int idx) {
 		if (s == e)
-			return seg[idx] = ary[s];
-		int mid = (s + e) / 2;
-		int left = init(s, mid, idx * 2);
-		int right = init(mid + 1, e, idx * 2 + 1);
-		return seg[idx] = left > right ? left : right;
+			return seg[idx] = val;
 
+		int mid = (s + e) / 2;
+
+		return seg[idx] = Math.max(update(s, mid, idx * 2, chg, val), update(mid + 1, e, idx * 2 + 1, chg, val));
 	}
 
 }
