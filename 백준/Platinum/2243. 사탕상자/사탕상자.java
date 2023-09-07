@@ -3,6 +3,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+//흔한 세그트리 문제
+//k번째 수를 찾기 위해 100만의 배열을 바탕으로 세그트리 열어서
+//각 수가 몇개인지 판단
+
+//틀린 이유 : a==1일때 업데이트문에 B를 넣었다.
+//b가 아니라 결과의 인덱스를 넣었어야했음
+
+//답이 틀렸을 경우 세그트리 부분 뿐만 아니라 
+//인풋을 제대로 활용했는지 확인하기
+
 public class Main {
 	static class Node {
 		int flavor;
@@ -40,14 +50,14 @@ public class Main {
 				Node node = getK(1, max, 1, b);
 				sb.append(node.flavor).append("\n");
 				update(1, max, 1, node.flavor, -1);
-			//	printseg();
+				// printseg();
 
 			}
 			if (a == 2) {
 				int b = Integer.parseInt(st.nextToken());
 				int c = Integer.parseInt(st.nextToken());
 				update(1, max, 1, b, c);
-			//	printseg();
+				// printseg();
 
 			}
 		}
@@ -81,13 +91,13 @@ public class Main {
 	}
 
 	private static Node update(int s, int e, int idx, int c, int val) {
-		//System.out.println(s + " " + e);
+		// System.out.println(s + " " + e);
 		if (c < s || e < c) {
 			return seg[idx];
 		}
 
 		if (s == e) {
-		//	System.out.println("update : " + s);
+			// System.out.println("update : " + s);
 			seg[idx].cnt += val;
 			return seg[idx];
 		}
