@@ -12,6 +12,8 @@ import java.util.StringTokenizer;
 // = 2,250,000 * 21
 // = 47,250,000
 
+//내림차순으로 정렬하면 시간 초과난다 ..이유는?
+
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,8 +26,11 @@ public class Main {
 				ary[i * n + j] = Integer.parseInt(st.nextToken());
 			}
 		}
+		// 시간초과
+//		 Arrays.sort(ary, Collections.reverseOrder());
+//		 System.out.println(ary[n - 1]);
 
-		// Arrays.sort(ary, Collections.reverseOrder());
+		// 정답
 		Arrays.sort(ary);
 		System.out.println(ary[n * n - n]);
 	}
