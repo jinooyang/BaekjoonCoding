@@ -23,7 +23,7 @@ public class Main {
 			ary[i + 1] = Integer.parseInt(st.nextToken());
 		}
 		init(1, n, 1);
-		//printseg(n);
+		// printseg(n);
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < q1 + q2; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -38,14 +38,14 @@ public class Main {
 				int r = Integer.parseInt(st.nextToken());
 				int val = Integer.parseInt(st.nextToken());
 				update(1, n, 1, l, r, val);
-				//printseg(n);
+				// printseg(n);
 			}
 		}
 		System.out.println(sb);
 	}
 
 	private static void printseg(int n) {
-		for(int ii=0;ii<4*n;ii++) {
+		for (int ii = 0; ii < 4 * n; ii++) {
 			System.out.print(seg[ii] + " ");
 		}
 		System.out.println();
@@ -73,12 +73,14 @@ public class Main {
 				lazy[idx * 2] += val;
 				lazy[idx * 2 + 1] += val;
 			}
-		}
-		if (s == e)
 			return;
+		}
+//		if (s == e)
+//			return;
 		int mid = (s + e) >> 1;
 		update(s, mid, idx * 2, l, r, val);
-		update(mid + 1, e, idx * 2, l, r, val);
+		update(mid + 1, e, idx * 2 + 1, l, r, val);
+		seg[idx] = seg[idx * 2] + seg[idx * 2 + 1];
 	}
 
 	private static long getSum(int s, int e, int idx, int l, int r) {
