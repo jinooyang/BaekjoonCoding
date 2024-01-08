@@ -12,14 +12,12 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = null;
-		StringBuilder sb = new StringBuilder();
 		int n = Integer.parseInt(br.readLine());
 		seg = new List[4 * n];
 		for (int i = 0; i < 4 * n; i++) {
 			seg[i] = new ArrayList<>();
 		}
-		st = new StringTokenizer(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < n; i++) {
 			int x = Integer.parseInt(st.nextToken());
 			update(0, n - 1, 1, i, x);
@@ -27,6 +25,7 @@ public class Main {
 		for (int i = 0; i < 4 * n; i++) {
 			Collections.sort(seg[i]);
 		}
+		StringBuilder sb = new StringBuilder();
 		int Q = Integer.parseInt(br.readLine());
 		for (int q = 0; q < Q; q++) {
 			st = new StringTokenizer(br.readLine());
