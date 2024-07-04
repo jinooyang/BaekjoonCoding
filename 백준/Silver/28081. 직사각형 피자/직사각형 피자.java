@@ -1,67 +1,82 @@
-import java.io.FileInputStream;
-import java.util.*;
 import java.io.*;
+import java.util.*;
+
 public class Main {
-
-    static long w, h, k;
-
-    static boolean check(long height, long wide) {
-        return height * wide <= k;
-    }
-
     public static void main(String[] args) throws IOException {
-       // System.setIn(new FileInputStream("test.txt"));
-        Scanner scanner = new Scanner(System.in);
+        //System.setIn(new FileInputStream("test.txt"));
 
-        w = scanner.nextLong();
-        h = scanner.nextLong();
-        k = scanner.nextLong();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int W = Integer.parseInt(st.nextToken());
+        int H = Integer.parseInt(st.nextToken());
+        long K = Long.parseLong(st.nextToken());
 
-        int n = scanner.nextInt();  // 가로 방향 커팅 개수
-        long[] height = new long[n];
-        List<Long> block_h = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            height[i] = scanner.nextLong();
-            if (i != 0) {
-                block_h.add(height[i] - height[i - 1]);
-            } else {
-                block_h.add(height[i]);
-            }
+        int N = Integer.parseInt(br.readLine());
+        long yAry[] = new long[N];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            yAry[i] = Integer.parseInt(st.nextToken());
         }
-        block_h.add(h - height[n - 1]);
 
-        int m = scanner.nextInt();  // 세로 방향 커팅 개수
-        long[] wide = new long[m];
-        List<Long> block_w = new ArrayList<>();
-
-        for (int i = 0; i < m; i++) {
-            wide[i] = scanner.nextLong();
-            if (i != 0) {
-                block_w.add(wide[i] - wide[i - 1]);
-            } else {
-                block_w.add(wide[i]);
-            }
+        int M = Integer.parseInt(br.readLine());
+        long xAry[] = new long[M];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i++) {
+            xAry[i] = Integer.parseInt(st.nextToken());
         }
-        block_w.add(w - wide[m - 1]);
 
-        long ret = 0;
-        Collections.sort(block_w);
 
-        for (long bh : block_h) { // height
-            int left = 0;  // block_w의 인덱스를 저장
-            int right = block_w.size() - 1;
+        long height[] = new long[N + 1];
+        getDiff(N, height, yAry, H);
 
-            while (left <= right) { // wide
-                int mid = (left + right) / 2;
-                if (check(bh, block_w.get(mid))) {
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
+
+
+        long width[] = new long[M + 1];
+        getDiff(M, width, xAry, W);
+
+
+
+        Arrays.sort(height);
+        Arrays.sort(width);
+
+//        System.out.println(Arrays.toString(height));
+//        System.out.println(Arrays.toString(width));
+
+        long answer = 0;
+        for (int i = 0; i < width.length; i++) {
+            long w = width[i];
+            int s = 0;
+            int e = height.length - 1;
+            int index = -1;
+
+            while (s <= e) {
+                int mid = (s + e) >> 1;
+
+                long area = w * height[mid];
+                if (area <= K) {
+                    index = Math.max(index, mid);
+                    s = mid + 1;
+                    continue;
+                }
+                if (area > K) {
+                    e = mid - 1;
                 }
             }
-            ret += left;
+            answer += index + 1;
+
         }
-        System.out.println(ret);
+
+        System.out.println(answer);
     }
+
+    private static void getDiff(int N, long[] height, long[] ary, long X) {
+        for (int i = 0; i <= N; i++) {
+            if (i > 0 && i < N)
+                height[i] = ary[i] - ary[i - 1];
+            else if (i == N)
+                height[i] = X - ary[i - 1];
+            else height[i] = ary[i];
+        }
+    }
+
 }
