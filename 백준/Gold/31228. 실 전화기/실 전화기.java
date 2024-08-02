@@ -10,7 +10,6 @@ public class Main {
         //(Y*2 *x)/2
         //결론 : X*Y -> 꼭지점 개수 * (한 선분 사이의 꼭지점 개수)
 
-
         //System.setIn(new FileInputStream("test.txt"));
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -27,11 +26,6 @@ public class Main {
 
         //하나의 선분 사이에 존재하는 꼭지점의 개수는?
         long Y = (lcm / N) - 1;
-//        System.out.println("최소공약수 : " + gcd);
-//        System.out.println("최소공배수 : " + lcm);
-//        System.out.println("X 꼭지점 개수 : " + X);
-//        System.out.println("선분사이 꼭지점 개수 : " + Y);
-//        System.out.print("정답 : ");
         System.out.println(X*Y);
 
     }
