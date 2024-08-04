@@ -3,10 +3,21 @@ import java.util.*;
 
 public class Main {
     public static final long MOD = Long.MAX_VALUE;
+    
     public static void main(String[] args) throws IOException {
-        //System.setIn(new FileInputStream("test.txt"));
-//        System.out.println(Long.MAX_VALUE);
-//        System.out.println((long)Math.pow(2,64));
+        
+        /*
+        * 친구들이 못받을 사탕의 수를 배분한다
+        * 정렬하고
+        * 앞에서부터 엔빵한 만큼 제거한다
+        * 1번 -> N빵한만큼 제거
+        * 2번 -> 1번을 제외하고 나머지끼리 N-1빵한만큼 제거
+        * 
+        * */
+        
+        
+       // System.setIn(new FileInputStream("test.txt"));
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int M = Integer.parseInt(st.nextToken());
@@ -23,21 +34,17 @@ public class Main {
         Arrays.sort(want);
 
         long allTake = totalWant - M;
-//        System.out.println("allTake : " + allTake);
 
         for (int i = 0; i < N; i++) {
             long take = Math.min(canHave[i], allTake / (N - i));
-
             canHave[i] -= take;
             allTake -= take;
         }
 
-//        System.out.println(Arrays.toString(canHave));
         long answer = 0;
         for (int i = 0; i < N; i++) {
             long anger = want[i] - canHave[i];
-//            System.out.println("take : " + anger);
-            answer += anger*anger%MOD;
+            answer += anger * anger % MOD;
         }
         System.out.println(answer);
 
