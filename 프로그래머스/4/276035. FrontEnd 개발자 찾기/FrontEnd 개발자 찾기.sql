@@ -1,0 +1,16 @@
+-- 코드를 작성해주세요
+SELECT 
+    B.ID,
+    B.EMAIL,
+    B.FIRST_NAME,
+    B.LAST_NAME 
+FROM 
+    SKILLCODES A,
+    DEVELOPERS B 
+WHERE 
+    (B.SKILL_CODE & A.CODE)>0 
+    AND 
+    A.CATEGORY = 'Front End'
+GROUP BY B.ID,B.EMAIL,B.FIRST_NAME,B.LAST_NAME
+ORDER BY 
+    B.ID ASC;
